@@ -11,7 +11,7 @@ filetype off
 call plug#begin('~/.vim/plugged/')
 
 " Autocomplete
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --rust-completer' }
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --rust-completer' }
 " Fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " Async library
