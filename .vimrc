@@ -297,6 +297,8 @@ let g:airline_powerline_fonts = 1
 
 " Map fuzzy finder
 nnoremap <C-p> :FZF<cr>
+let g:fzf_height = 10
+let $FZF_DEFAULT_COMMAND = 'rg -l ""'
 
 " enable glsl syntax highlighting
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl set filetype=glsl
@@ -310,8 +312,6 @@ set completeopt-=preview
 
 " quickscope
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-
-let g:fzf_height = 10
 
 let g:airline#extensions#ale#enabled = 1
 let g:ale_echo_msg_error_str = 'E'

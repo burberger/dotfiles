@@ -30,7 +30,7 @@ DISABLE_AUTO_TITLE="true"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-OMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -49,7 +49,7 @@ OMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git fedora zsh-syntax-highlighting)
+plugins=(git debian zsh-syntax-highlighting)
 
 # User configuration
 stty -ixon
@@ -68,11 +68,11 @@ export PATH=$PATH:$GOPATH/bin:$HOME/local/bin:$HOME/.cargo/bin:$HOME/.local/bin
 # Default editor
 export EDITOR=vim
 
+source $ZSH/oh-my-zsh.sh
+
 # NS3 stuff
 # {{{
 export NS3DIR=$HOME/src/netsim/ns-allinone-3.28/ns-3.28
-
-source $ZSH/oh-my-zsh.sh
 
 fpath+=~/.zfunc
 
