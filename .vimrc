@@ -11,7 +11,19 @@ filetype off
 call plug#begin('~/.vim/plugged/')
 
 " Autocomplete
-"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --rust-completer' }
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
+" Language server integration
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 " Fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " Async library
@@ -37,7 +49,7 @@ Plug 'scrooloose/nerdtree'
 " Easy commenting
 Plug 'scrooloose/nerdcommenter'
 " File linting
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 " Colorscheme
 Plug 'morhetz/gruvbox'
 " Use * to find whats in a visual selection
@@ -73,10 +85,15 @@ call plug#end()
 set enc=utf-8 "UTF-8
 
 " Syntax Highlighting
-syntax on 
+syntax on
 set background=dark
 colorscheme gruvbox
 let g:gruvbox_contrast_dark='medium'
+" This is only necessary if you use "set termguicolors".
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" fixes glitch? in colors when using vim with tmux
+set t_Co=256
 set termguicolors
 
 " Editor behavior
@@ -88,6 +105,7 @@ set softtabstop=4 " let backspace delete indent
 set shiftwidth=4  " to control how many columns text is indented with the reindent operations
 set autoindent    " insensitiveIndent at the same level of the previous line
 set updatetime=100 " 100ms update time for GUI events
+set signcolumn=yes
 
 filetype indent on
 filetype plugin on
@@ -255,7 +273,7 @@ command! MdMode call Markdown()
 
 " Latex configs
 autocmd FileType tex setlocal spell
-autocmd Filetype tex setlocal ts=2 sw=2 sts=2 
+autocmd Filetype tex setlocal ts=2 sw=2 sts=2
 
 command! W w !sudo tee % > /dev/null
 
@@ -314,3 +332,55 @@ let g:gitgutter_sign_modified='┃'
 let g:gitgutter_sign_removed='◢'
 let g:gitgutter_sign_removed_first_line='◥'
 let g:gitgutter_sign_modified_removed='◢'
+
+" Deoplete
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" Language server configs
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'python': ['/usr/local/bin/pyls'],
+    \ 'go': ['gopls']
+    \ }
+
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+let g:LanguageClient_diagnosticsDisplay = {
+            \ 1: {
+            \     "name": "Error",
+            \     "texthl": "ALEError",
+            \     "signText": ">>",
+            \     "signTexthl": "ALEErrorSign",
+            \     "virtualTexthl": "Error",
+            \ },
+            \ 2: {
+            \     "name": "Warning",
+            \     "texthl": "ALEWarning",
+            \     "signText": "--",
+            \     "signTexthl": "ALEWarningSign",
+            \     "virtualTexthl": "Todo",
+            \ },
+            \ 3: {
+            \     "name": "Information",
+            \     "texthl": "ALEInfo",
+            \     "signText": "--",
+            \     "signTexthl": "ALEInfoSign",
+            \     "virtualTexthl": "Todo",
+            \ },
+            \ 4: {
+            \     "name": "Hint",
+            \     "texthl": "ALEInfo",
+            \     "signText": "?",
+            \     "signTexthl": "ALEInfoSign",
+            \     "virtualTexthl": "Todo",
+            \ },
+            \}
+
+""" Language Configs
+""" Go
+" Run gofmt on save
+autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
