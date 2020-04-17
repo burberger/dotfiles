@@ -11,19 +11,7 @@ filetype off
 call plug#begin('~/.vim/plugged/')
 
 " Autocomplete
-if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
-endif
-let g:deoplete#enable_at_startup = 1
-" Language server integration
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer --go-completer --rust-completer' }
 " Fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " Async library
@@ -309,6 +297,11 @@ let g:NERDTreeHijackNetrw=1
 " YouCompleteMe settings
 let g:ycm_confirm_extra_conf = 0
 set completeopt-=preview
+" set completeopt+=popup "Shows docs in a giant popup window
+nnoremap <silent> K :YcmCompleter GetDoc<cr>
+nnoremap <silent> gd :YcmCompleter GoToDefinition<cr>
+nnoremap <silent> <F2> :YcmCompleter RefactorRename 
+nnoremap <silent> gf :YcmCompleter FixIt<cr>
 
 " quickscope
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
@@ -332,55 +325,3 @@ let g:gitgutter_sign_modified='┃'
 let g:gitgutter_sign_removed='◢'
 let g:gitgutter_sign_removed_first_line='◥'
 let g:gitgutter_sign_modified_removed='◢'
-
-" Deoplete
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-" Language server configs
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'python': ['/usr/local/bin/pyls'],
-    \ 'go': ['gopls']
-    \ }
-
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-
-let g:LanguageClient_diagnosticsDisplay = {
-            \ 1: {
-            \     "name": "Error",
-            \     "texthl": "ALEError",
-            \     "signText": ">>",
-            \     "signTexthl": "ALEErrorSign",
-            \     "virtualTexthl": "Error",
-            \ },
-            \ 2: {
-            \     "name": "Warning",
-            \     "texthl": "ALEWarning",
-            \     "signText": "--",
-            \     "signTexthl": "ALEWarningSign",
-            \     "virtualTexthl": "Todo",
-            \ },
-            \ 3: {
-            \     "name": "Information",
-            \     "texthl": "ALEInfo",
-            \     "signText": "--",
-            \     "signTexthl": "ALEInfoSign",
-            \     "virtualTexthl": "Todo",
-            \ },
-            \ 4: {
-            \     "name": "Hint",
-            \     "texthl": "ALEInfo",
-            \     "signText": "?",
-            \     "signTexthl": "ALEInfoSign",
-            \     "virtualTexthl": "Todo",
-            \ },
-            \}
-
-""" Language Configs
-""" Go
-" Run gofmt on save
-autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
