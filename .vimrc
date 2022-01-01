@@ -37,7 +37,7 @@ Plug 'scrooloose/nerdtree'
 " Easy commenting
 Plug 'scrooloose/nerdcommenter'
 " File linting
-"Plug 'w0rp/ale'
+Plug 'w0rp/ale'
 " Colorscheme
 Plug 'morhetz/gruvbox'
 " Use * to find whats in a visual selection
@@ -204,7 +204,7 @@ nnoremap <leader>p :cp<CR>
 nnoremap <F9> :cw<CR>
 
 " Set editing font for gui
-set guifont=Source\ Code\ Pro\ Regular\ 11
+set guifont=Source\ Code\ Pro\ for\ Powerline\ Regular\ 11
 
 "Remove GUI Fluff (easier way, don't open the GUI)
 set guioptions-=m "remove menu bar
@@ -262,6 +262,7 @@ command! MdMode call Markdown()
 " Latex configs
 autocmd FileType tex setlocal spell
 autocmd Filetype tex setlocal ts=2 sw=2 sts=2
+let g:tex_flavor = 'latex'
 
 command! W w !sudo tee % > /dev/null
 
@@ -276,6 +277,8 @@ function! Csc()
     copen
 endfunction
 command! Csc call Csc()
+
+autocmd Filetype tf setlocal shiftwidth=2 softtabstop=2 expandtab
 
 " ------------------------------------------------------------------------------
 " Plugin Configuration

@@ -49,7 +49,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git debian zsh-syntax-highlighting)
+plugins=(git debian zsh-syntax-highlighting kubectl)
 
 # User configuration
 stty -ixon
@@ -64,11 +64,19 @@ export MAKEFLAGS=-j13
 export GOPATH=$HOME/src/go
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$GOPATH/bin:$HOME/local/bin:$HOME/.cargo/bin:$HOME/.local/bin
+export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin
 
 # Default editor
 export EDITOR=vim
 
 source $ZSH/oh-my-zsh.sh
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
 
 # NS3 stuff
 # {{{
@@ -85,12 +93,27 @@ function waff {
 # }}}
 
 # Utility Aliases
-alias http="python -m SimpleHTTPServer"
+alias http="python3 -m http.server"
 alias ls=exa
 alias lg="ll --git"
+alias ignore-tags="echo tags >> .git/info/exclude"
+alias iso-date="date -u +'%Y-%m-%dT%H:%M:%SZ'"
 
-# Moose docker stuff
-alias menv="docker run -it -v '$(pwd)':/app -w /app moose:1"
-alias mbash="docker run -it -v $PWD:/app -w /app moose:1 /bin/bash"
+function enable_conda {
+    # >>> conda initialize >>>
+    # !! Contents within this block are managed by 'conda init' !!
+    __conda_setup="$('/home/bob/tools/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "/home/bob/tools/miniconda3/etc/profile.d/conda.sh" ]; then
+            . "/home/bob/tools/miniconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="/home/bob/tools/miniconda3/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+    # <<< conda initialize <<<
+}
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
