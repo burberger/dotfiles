@@ -60,16 +60,6 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- LSP Configs
-vim.lsp.config("lua_ls", {
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { "vim" }, -- Suppress warnings in nvim configs
-            },
-        },
-    }
-})
-
 -- Statusline
 require("lualine").setup()
 
