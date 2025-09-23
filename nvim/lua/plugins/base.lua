@@ -31,10 +31,9 @@ return {
                 "lua_ls",
                 "rust_analyzer",
                 "rust_hdl",
-                "clang-format",
+                "pyright",
+                "ruff",
                 "clangd",
-                "typescript-language-server",
-                "neocmakelsp",
             },
         },
         dependencies = {
@@ -74,5 +73,24 @@ return {
         keys = {
             { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
         }
-}
+    },
+    {
+        "benomahony/uv.nvim",
+        ft = { "python" },
+        dependencies = {
+            "nvim-telescope/telescope.nvim",
+        },
+        opts = {
+            picker_integration = true,
+        },
+    },
+    {
+        "kylechui/nvim-surround",
+        version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
+        event = "VeryLazy",
+        config = function()
+            require("nvim-surround").setup({
+            })
+        end
+    }
 }
