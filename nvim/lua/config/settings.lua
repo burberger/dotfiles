@@ -74,7 +74,12 @@ vim.lsp.config("lua_ls", {
 require("lualine").setup()
 
 -- GUI configs and color scheme
-vim.o.guifont = "SauceCodePro NFM:h12"
+if vim.loop.os_uname().sysname == "Darwin" then
+    vim.o.guifont = "SauceCodePro NFM:h14"
+else
+    vim.o.guifont = "SauceCodePro NFM:h12"
+end
+
 vim.o.termguicolors = true
 require("gruvbox").setup({
 	italic = {
