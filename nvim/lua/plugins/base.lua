@@ -119,7 +119,4 @@ return {
             "hrsh7th/nvim-cmp"
         },
     },
-    {
-        "ervandew/supertab",
-    },
 }
