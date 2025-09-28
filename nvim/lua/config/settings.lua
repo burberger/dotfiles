@@ -1,4 +1,5 @@
 -- Basic settings
+vim.o.number = true
 vim.o.relativenumber = true
 vim.o.signcolumn = 'yes'
 vim.o.undofile = true
@@ -28,7 +29,8 @@ vim.api.nvim_set_keymap('n', '<leader> ', ':noh<cr>', {noremap = true})
 
 -- Telescope configs
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<c-p>', builtin.find_files, {noremap = true})
+vim.keymap.set('n', '<c-p>', builtin.git_files, {noremap = true})
+vim.keymap.set('n', '<c-s-p>', builtin.find_files, {noremap = true})
 vim.keymap.set('n', '<c-s-f>', builtin.live_grep, {noremap = true})
 
 -- Tree view
