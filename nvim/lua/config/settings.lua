@@ -84,7 +84,6 @@ require("gruvbox").setup({
 })
 vim.cmd [[ colorscheme gruvbox ]]
 
-
 -- GUI copy paste
 if vim.g.neovide then
 	vim.api.nvim_set_keymap('v', '<sc-c>', '"+y', {noremap = true})
