@@ -1,29 +1,55 @@
 return {
-	'ellisonleao/gruvbox.nvim',
-	{
-		"nvim-treesitter/nvim-treesitter",
-		branch = 'master',
-		lazy = false,
-		build = ":TSUpdate",
-	},
-	{
-	    "nvim-neo-tree/neo-tree.nvim",
-	    branch = "v3.x",
-	    dependencies = {
-	      "nvim-lua/plenary.nvim",
-	      "MunifTanjim/nui.nvim",
-	      "nvim-tree/nvim-web-devicons", -- optional, but recommended
-	    },
-	    lazy = false, -- neo-tree will lazily load itself
-	},
-	{
-		"nvim-telescope/telescope.nvim",
-		tag = '0.1.8',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-			'nvim-treesitter/nvim-treesitter',
-		}
-	},
+    'ellisonleao/gruvbox.nvim',
+    {
+        "nvim-treesitter/nvim-treesitter",
+        branch = 'master',
+        lazy = false,
+        build = ":TSUpdate",
+    },
+    {
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v3.x",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "MunifTanjim/nui.nvim",
+            "nvim-tree/nvim-web-devicons", -- optional, but recommended
+        },
+        lazy = false, -- neo-tree will lazily load itself
+    },
+    {
+        "nvim-telescope/telescope.nvim",
+        tag = '0.1.8',
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            'nvim-treesitter/nvim-treesitter',
+        }
+    },
+    {
+        "debugloop/telescope-undo.nvim",
+        dependencies = { -- note how they're inverted to above example
+            {
+                "nvim-telescope/telescope.nvim",
+                dependencies = { "nvim-lua/plenary.nvim" },
+            },
+        },
+        keys = {
+            { -- lazy style key map
+                "<leader>u",
+                "<cmd>Telescope undo<cr>",
+                desc = "undo history",
+            },
+        },
+        opts = {
+            extensions = {
+                undo = {
+                },
+            },
+        },
+        config = function(_, opts)
+            require("telescope").setup(opts)
+            require("telescope").load_extension("undo")
+        end,
+    },
     {
         "mason-org/mason-lspconfig.nvim",
         opts = {
@@ -97,6 +123,8 @@ return {
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-cmdline",
     "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-nvim-lsp-signature-help",
+    "onsails/lspkind.nvim",
     {
         "hrsh7th/nvim-cmp",
         event = { "InsertEnter", "CmdlineEnter" },
@@ -106,6 +134,8 @@ return {
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-cmdline",
             "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
+            "onsails/lspkind.nvim",
         }
     },
     {

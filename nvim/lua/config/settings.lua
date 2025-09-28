@@ -2,6 +2,11 @@
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.signcolumn = 'yes'
+vim.o.wrap = false
+
+-- State file settings
+vim.o.swapfile = false
+vim.o.backup = false
 vim.o.undofile = true
 
 -- Indent settings
