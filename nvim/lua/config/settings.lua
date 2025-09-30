@@ -37,13 +37,14 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<c-p>', builtin.git_files, {noremap = true})
 vim.keymap.set('n', '<c-s-p>', builtin.find_files, {noremap = true})
 vim.keymap.set('n', '<c-s-f>', builtin.live_grep, {noremap = true})
+vim.keymap.set('n', '<c-e>', builtin.diagnostics, {noremap = true})
 
 -- Tree view
 vim.keymap.set('n', '<leader>f', ':Neotree toggle<cr>', {noremap = true})
 vim.keymap.set('n', '<leader>g', ':Neotree git_status toggle<cr>', {noremap = true})
 
 -- Treesitter config
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
 	ensure_installed = { 'c', 'cpp', 'css', 'typescript', 'html', 'lua', 'rust', 'tsx',
 		'vhdl', 'yaml', 'python', 'bash', 'c_sharp', 'fsharp', 'go',
 	},
@@ -64,11 +65,22 @@ require('nvim-treesitter.configs').setup {
 	indent = {
 		enable = true,
 	},
-}
+})
 
--- LSP Configs
+-- Diagnostics
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '✘',
+      [vim.diagnostic.severity.WARN] = '▲',
+      [vim.diagnostic.severity.HINT] = '⚑',
+      [vim.diagnostic.severity.INFO] = '»',
+    },
+  },
+})
+
 -- Statusline
-require("lualine").setup()
+require("lualine").setup({})
 
 -- GUI configs and color scheme
 if vim.loop.os_uname().sysname == "Darwin" then

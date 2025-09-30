@@ -118,29 +118,79 @@ return {
             })
         end
     },
-    "hrsh7th/cmp-vsnip",
-    "hrsh7th/vim-vsnip",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-cmdline",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-nvim-lsp-signature-help",
-    "onsails/lspkind.nvim",
     {
-        "hrsh7th/nvim-cmp",
-        event = { "InsertEnter", "CmdlineEnter" },
-        dependencies = {
-            "hrsh7th/cmp-vsnip",
-            "hrsh7th/vim-vsnip",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-cmdline",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-nvim-lsp-signature-help",
-            "onsails/lspkind.nvim",
-        }
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                -- See the configuration section for more details
+                -- Load luvit types when the `vim.uv` word is found
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            },
+        },
     },
     {
-        'windwp/nvim-autopairs',
-        event = "InsertEnter",
-        config = true
+        "saghen/blink.cmp",
+        dependencies = {
+            "rafamadriz/friendly-snippets",
+            "nvim-tree/nvim-web-devicons", -- optional, but recommended
+            "onsails/lspkind.nvim", -- Completion icons
+        },
+        version = "1.*",
+        opts = {
+            keymap = { preset = "super-tab" },
+            completion = {
+                menu = {
+                    border = "rounded",
+                    draw = {
+                        columns = {
+                            { "label",     "label_description", gap = 1 },
+                            { "kind_icon", "kind",              gap = 1 },
+                        },
+                        components = {
+                            kind_icon = {
+                                text = function(ctx)
+                                    local icon = ctx.kind_icon
+                                    if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                                        local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                                        if dev_icon then
+                                            icon = dev_icon
+                                        end
+                                    else
+                                        icon = require("lspkind").symbolic(ctx.kind, {
+                                            mode = "symbol",
+                                        })
+                                    end
+
+                                    return icon .. ctx.icon_gap
+                                end,
+
+                                -- Optionally, use the highlight groups from nvim-web-devicons
+                                -- You can also add the same function for `kind.highlight` if you want to
+                                -- keep the highlight groups in sync with the icons.
+                                highlight = function(ctx)
+                                    local hl = ctx.kind_hl
+                                    if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                                        local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                                        if dev_icon then
+                                            hl = dev_hl
+                                        end
+                                    end
+                                    return hl
+                                end,
+                            },
+                        },
+                    },
+                },
+                documentation = {
+                    auto_show = true,
+                    window = { border = "rounded" },
+                }
+            },
+            sources = {
+                default = { "lsp", "path", "snippets", "buffer" },
+            },
+        },
+        opts_extend = { "sources.default" },
     },
 }
