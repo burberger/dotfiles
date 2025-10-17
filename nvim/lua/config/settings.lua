@@ -45,14 +45,17 @@ vim.keymap.set('n', '<leader>g', ':Neotree git_status toggle<cr>', {noremap = tr
 
 -- Diagnostics
 vim.diagnostic.config({
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = '✘',
-      [vim.diagnostic.severity.WARN] = '▲',
-      [vim.diagnostic.severity.HINT] = '⚑',
-      [vim.diagnostic.severity.INFO] = '»',
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = '✘',
+            [vim.diagnostic.severity.WARN] = '▲',
+            [vim.diagnostic.severity.HINT] = '⚑',
+            [vim.diagnostic.severity.INFO] = '»',
+        },
     },
-  },
+    virtual_lines = {
+        current_line = true,
+    },
 })
 
 -- Statusline
