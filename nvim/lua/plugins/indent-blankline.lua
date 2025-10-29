@@ -5,8 +5,13 @@ return {
             "nvim-treesitter/nvim-treesitter"
         },
         version = "*",
-        config = function(_, _)
-            require("ibl").setup()
+        opts = {
+            indent = {
+                char = "▏",
+            },
+        },
+        config = function(_, opts)
+            require("ibl").setup(opts)
         end,
     }
 }
