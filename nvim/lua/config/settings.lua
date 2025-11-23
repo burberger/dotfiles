@@ -18,30 +18,40 @@ vim.o.smartindent = true
 vim.o.expandtab = true
 
 -- Make Y behave like default vim
-vim.api.nvim_set_keymap('n', 'Y', 'yy', {noremap = true})
+vim.api.nvim_set_keymap('n', 'Y', 'yy', { noremap = true })
 
 -- Window navigation
-vim.api.nvim_set_keymap('n', '<c-h>', '<c-w>h', {noremap = true})
-vim.api.nvim_set_keymap('n', '<c-j>', '<c-w>j', {noremap = true})
-vim.api.nvim_set_keymap('n', '<c-k>', '<c-w>k', {noremap = true})
-vim.api.nvim_set_keymap('n', '<c-l>', '<c-w>l', {noremap = true})
+vim.api.nvim_set_keymap('n', '<c-h>', '<c-w>h', { noremap = true })
+vim.api.nvim_set_keymap('n', '<c-j>', '<c-w>j', { noremap = true })
+vim.api.nvim_set_keymap('n', '<c-k>', '<c-w>k', { noremap = true })
+vim.api.nvim_set_keymap('n', '<c-l>', '<c-w>l', { noremap = true })
 -- Create splits
-vim.api.nvim_set_keymap('n', '<leader>w', '<c-w>v<c-w>l', {noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>r', '<c-w>s<c-w>j', {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>w', '<c-w>v<c-w>l', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>r', '<c-w>s<c-w>j', { noremap = true })
 
 -- Clear search
-vim.api.nvim_set_keymap('n', '<leader> ', ':noh<cr>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader> ', ':noh<cr>', { noremap = true })
 
 -- Telescope configs
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<c-p>', builtin.git_files, {noremap = true})
-vim.keymap.set('n', '<c-s-p>', builtin.find_files, {noremap = true})
-vim.keymap.set('n', '<c-s-f>', builtin.live_grep, {noremap = true})
-vim.keymap.set('n', '<c-e>', builtin.diagnostics, {noremap = true})
+
+local function find_files()
+    local is_git_repo = vim.api.nvim_exec2("!git rev-parse --is-inside-work-tree", {})
+    if is_git_repo == "true" then
+        builtin.git_files()
+    else
+        builtin.find_files()
+    end
+end
+
+vim.keymap.set('n', '<c-p>', find_files, { noremap = true })
+vim.keymap.set('n', '<c-s-p>', builtin.find_files, { noremap = true })
+vim.keymap.set('n', '<c-s-f>', builtin.live_grep, { noremap = true })
+vim.keymap.set('n', '<c-e>', builtin.diagnostics, { noremap = true })
 
 -- Tree view
-vim.keymap.set('n', '<leader>f', ':Neotree toggle<cr>', {noremap = true})
-vim.keymap.set('n', '<leader>g', ':Neotree git_status toggle<cr>', {noremap = true})
+vim.keymap.set('n', '<leader>f', ':Neotree toggle<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>g', ':Neotree git_status toggle<cr>', { noremap = true })
 
 -- Diagnostics
 vim.diagnostic.config({
@@ -75,11 +85,10 @@ vim.cmd [[ colorscheme gruvbox ]]
 
 -- GUI copy paste
 if vim.g.neovide then
-	vim.api.nvim_set_keymap('v', '<sc-c>', '"+y', {noremap = true})
-	vim.api.nvim_set_keymap('n', '<sc-v>', '"+P', {noremap = true})
-	vim.api.nvim_set_keymap('v', '<sc-v>', '"+P', {noremap = true})
+    vim.api.nvim_set_keymap('v', '<sc-c>', '"+y', { noremap = true })
+    vim.api.nvim_set_keymap('n', '<sc-v>', '"+P', { noremap = true })
+    vim.api.nvim_set_keymap('v', '<sc-v>', '"+P', { noremap = true })
     vim.api.nvim_set_keymap("c", "<sc-v>", "<C-R>0", { noremap = true })
-	vim.api.nvim_set_keymap('i', '<sc-v>', '<ESC>"+p', {noremap = true})
-	vim.api.nvim_set_keymap('t', '<sc-v>', '<C-\\><C-n>"+Pi', {noremap = true})
+    vim.api.nvim_set_keymap('i', '<sc-v>', '<ESC>"+p', { noremap = true })
+    vim.api.nvim_set_keymap('t', '<sc-v>', '<C-\\><C-n>"+Pi', { noremap = true })
 end
-
