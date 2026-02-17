@@ -19,7 +19,7 @@ return {
             "MunifTanjim/nui.nvim",
             "nvim-tree/nvim-web-devicons", -- optional, but recommended
         },
-        lazy = false, -- neo-tree will lazily load itself
+        lazy = false,                      -- neo-tree will lazily load itself
     },
     {
         "mason-org/mason-lspconfig.nvim",
@@ -30,6 +30,7 @@ return {
                 "pyright",
                 "ruff",
                 "clangd",
+                "bashls",
             },
         },
         dependencies = {
