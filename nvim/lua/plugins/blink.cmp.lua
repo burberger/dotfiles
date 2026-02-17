@@ -4,7 +4,7 @@ return {
         dependencies = {
             "rafamadriz/friendly-snippets",
             "nvim-tree/nvim-web-devicons", -- optional, but recommended
-            "onsails/lspkind.nvim", -- Completion icons
+            "onsails/lspkind.nvim",        -- Completion icons
         },
         version = "1.*",
         opts = {
