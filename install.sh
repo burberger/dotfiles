@@ -3,6 +3,8 @@ set -euo pipefail
 
 TEMP_DIR=""
 FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/SourceCodePro.zip"
+SYNTAX_HIGHLIGHTING_PATH=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+AUTOSUGGESTIONS_PATH=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 function cleanup {
     if [[ -d "$TEMP_DIR" ]]; then
@@ -10,12 +12,18 @@ function cleanup {
     fi
 }
 
+function check_compatibility {
+    # Fails if we're not running on fedora
+    grep -q "ID=fedora" /etc/os-release
+}
+
 function install_packages {
     sudo dnf install -y \
         git \
         neovim \
         zsh \
-        alacritty
+        alacritty \
+        lazygit
 }
 
 function setup_zsh_plugins {
@@ -25,8 +33,6 @@ function setup_zsh_plugins {
     fi
 
     # ZSH Plugins which are separately manually managed
-    SYNTAX_HIGHLIGHTING_PATH=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    AUTOSUGGESTIONS_PATH=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
     if [[ ! -d $SYNTAX_HIGHLIGHTING_PATH ]]; then
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SYNTAX_HIGHLIGHTING_PATH"
     fi
@@ -69,12 +75,20 @@ function full_install {
 }
 
 function update {
-    # Does nothing right now
-    echo ""
+    sudo dnf update
+    omz update
+
+    CURRENT_DIR=$(pwd)
+    cd "$SYNTAX_HIGHLIGHTING_PATH"
+    git pull
+    cd "$AUTOSUGGESTIONS_PATH"
+    git pull
+    cd "$CURRENT_DIR"
 }
 
 # Always clean up any generated temp files on exit.
 trap cleanup EXIT
+check_compatibility
 
 # No arguments, run a full install
 if [[ "$#" -eq "0" ]]; then
@@ -96,15 +110,19 @@ while [[ "$#" -gt 0 ]]; do
         "create_links" )
             create_links
             ;;
+        "update" )
+            update
+            ;;
         "--help" | "-h" )
             echo "Usage: $0 [install_stage] [--help] [-h]"
             echo "Installs and configures tools. If run with no arguments will run all install stages."
             echo ""
             echo "Valid install stages:"
-            echo "  install_packages"
-            echo "  setup_zsh_plugins"
-            echo "  setup_font"
-            echo "  create_links"
+            echo "  install_packages - Installs system packages from dnf"
+            echo "  setup_zsh_plugins - Installs oh-my-zsh and external ZSH plugins"
+            echo "  setup_font - Install monospace nerd font"
+            echo "  create_links - Symbolic link to each config file in the repo from its expected location"
+            echo "  update - Update plugins"
             ;;
         * )
             "Invalid argument: $1"
