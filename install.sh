@@ -16,6 +16,11 @@ function install_packages {
         neovim \
         zsh \
         alacritty
+
+    # Install oh-my-zsh if our login shell is bash
+    if [[ "$SHELL" == "/bin/bash" ]]; then
+        sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+    fi
 }
 
 function setup_zsh_plugins {
