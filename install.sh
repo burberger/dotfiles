@@ -16,14 +16,14 @@ function install_packages {
         neovim \
         zsh \
         alacritty
+}
 
+function setup_zsh_plugins {
     # Install oh-my-zsh if our login shell is bash
     if [[ "$SHELL" == "/bin/bash" ]]; then
         sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
     fi
-}
 
-function setup_zsh_plugins {
     # ZSH Plugins which are separately manually managed
     SYNTAX_HIGHLIGHTING_PATH=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     AUTOSUGGESTIONS_PATH=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
