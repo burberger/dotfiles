@@ -51,7 +51,7 @@ vim.keymap.set('n', '<c-e>', builtin.diagnostics, { noremap = true })
 
 -- Tree view
 vim.keymap.set('n', '<leader>f', ':Neotree toggle<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>g', ':Neotree git_status toggle<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>gst', ':Neotree git_status toggle<cr>', { noremap = true })
 
 -- Diagnostics
 vim.diagnostic.config({
