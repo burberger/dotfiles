@@ -13,9 +13,9 @@ end
 
 -- Writes a string to the state file.
 local function write_file(file, contents)
-  local fd = assert(io.open(file, "w+"))
-  fd:write(contents)
-  fd:close()
+    local fd = assert(io.open(file, "w+"))
+    fd:write(contents)
+    fd:close()
 end
 
 -- Fetches the current background theme string from the state file.
@@ -33,11 +33,11 @@ end
 -- Swaps what background color is currently configured and stores it in state as json.
 function M.toggle_background()
     vim.fn.mkdir(vim.fn.fnamemodify(filename, ":p:h"), "p")
-	if vim.o.background == "light" then
-		vim.o.background = "dark"
-	else
-		vim.o.background = "light"
-	end
+    if vim.o.background == "light" then
+        vim.o.background = "dark"
+    else
+        vim.o.background = "light"
+    end
     write_file(filename, vim.json.encode(vim.o.background))
 end
 
@@ -53,8 +53,8 @@ vim.api.nvim_create_user_command(
     "ToggleBackground",
     M.toggle_background,
     {
-	    desc = "Toggles the background between light and dark",
-	    nargs = 0,
+        desc = "Toggles the background between light and dark",
+        nargs = 0,
     }
 )
 
