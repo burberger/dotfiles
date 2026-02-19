@@ -14,7 +14,10 @@ function cleanup {
 
 function check_compatibility {
     # Fails if we're not running on fedora
-    grep -q "ID=fedora" /etc/os-release
+    if ! grep -q "ID=fedora" /etc/os-release; then
+        echo "Currently only support installation on fedora, exiting"
+        exit 1
+    fi
 }
 
 function install_packages {
