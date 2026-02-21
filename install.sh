@@ -22,11 +22,12 @@ function check_compatibility {
 
 function install_packages {
     sudo dnf install -y \
-        git \
-        neovim \
-        zsh \
         alacritty \
-        lazygit
+        git \
+        lazygit \
+        neovim \
+        uv \
+        zsh
 }
 
 function setup_zsh_plugins {

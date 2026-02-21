@@ -1,15 +1,3 @@
-[general]
-live_config_reload = true
-
-[font]
-normal = { family = "SauceCodePro NFM", style = "Regular" }
-size = 12
-
-[[keyboard.bindings]]
-key = "F"
-mods = "Control|Shift"
-action = "ReceiveChar"
-
 # Colors (Gruvbox dark)
 
 # Default colors
