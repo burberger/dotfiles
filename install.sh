@@ -21,6 +21,7 @@ function check_compatibility {
 }
 
 function install_packages {
+    check_compatibility
     sudo dnf install -y \
         alacritty \
         git \
@@ -71,11 +72,16 @@ function create_links {
     create_link "$WORKING_DIR/nvim" "$HOME/.config/nvim"
 }
 
+function post_install_setup {
+    tools/swap_term_colors.py
+}
+
 function full_install {
     install_packages
     setup_zsh_plugins
     setup_font
     create_links
+    post_install_setup
 }
 
 function update {
@@ -92,7 +98,6 @@ function update {
 
 # Always clean up any generated temp files on exit.
 trap cleanup EXIT
-check_compatibility
 
 # No arguments, run a full install
 if [[ "$#" -eq "0" ]]; then
@@ -114,6 +119,9 @@ while [[ "$#" -gt 0 ]]; do
         "create_links" )
             create_links
             ;;
+        "post_install_setup" )
+            post_install_setup
+            ;;
         "update" )
             update
             ;;
@@ -126,6 +134,7 @@ while [[ "$#" -gt 0 ]]; do
             echo "  setup_zsh_plugins - Installs oh-my-zsh and external ZSH plugins"
             echo "  setup_font - Install monospace nerd font"
             echo "  create_links - Symbolic link to each config file in the repo from its expected location"
+            echo "  post_install_setup - Runs all post installation config scripts"
             echo "  update - Update plugins"
             ;;
         * )
