@@ -92,3 +92,6 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap('i', '<sc-v>', '<ESC>"+p', { noremap = true })
     vim.api.nvim_set_keymap('t', '<sc-v>', '<C-\\><C-n>"+Pi', { noremap = true })
 end
+
+-- Auto resize windows on vim resize
+vim.cmd('autocmd VimResized * wincmd =')
