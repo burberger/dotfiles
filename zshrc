@@ -88,6 +88,8 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='nvim'
 # fi
 export EDITOR='nvim'
+export DOTFILES="$HOME/src/dotfiles"
+export SRCDIR="$HOME/src"
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
@@ -104,3 +106,6 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vim='nvim'
+alias dotfiles='cd $HOME/src/dotfiles'
+alias light="$DOTFILES/tools/swap_term_colors.py gruvbox_light"
+alias dark="$DOTFILES/tools/swap_term_colors.py gruvbox_dark"
