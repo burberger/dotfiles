@@ -3,6 +3,7 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.signcolumn = 'yes'
 vim.o.wrap = false
+vim.o.autowrite = true
 
 -- State file settings
 vim.o.swapfile = false
@@ -94,4 +95,15 @@ if vim.g.neovide then
 end
 
 -- Auto resize windows on vim resize
-vim.cmd('autocmd VimResized * wincmd =')
+vim.api.nvim_create_autocmd("VimResized", {
+    callback = function()
+        vim.cmd("wincmd =")
+    end,
+})
+
+-- Auto write on focus loss
+vim.api.nvim_create_autocmd("FocusLost", {
+    callback = function()
+        vim.cmd("silent! wa") -- Write All
+    end,
+})

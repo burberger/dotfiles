@@ -6,9 +6,10 @@
 # ]
 # ///
 import argparse
-import tomllib
-import tomli_w
 from pathlib import Path
+
+import tomli_w
+import tomllib
 
 
 def parse_args():
